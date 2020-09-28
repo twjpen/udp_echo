@@ -7,3 +7,7 @@ then connect to it with `netcat`:
 ```
 nc -u 127.0.0.1 8888
 ````
+If you want to stop the server send tbe `SIGINT` signal to it:
+```
+ctrl + c
+```
