@@ -44,17 +44,22 @@ int main(void)
 
 	freeaddrinfo(results);
 
-	printf("Listening on port  %s\n", PORT);
+	printf("Listening on port %s\n", PORT);
+
+	char client_ip[NI_MAXHOST];
 
 	while (1) {
 		memset(&recv_data, 0, sizeof(recv_data));
 		int bytes_read = recvfrom(socket_fd, recv_data, 1024, 0,
 					 (struct sockaddr *) &client_addr, &addrlen);
 		recv_data[bytes_read] = '\0';
-		printf("Datagram received\n");
+		getnameinfo((struct sockaddr *)&client_addr, addrlen,
+			     client_ip, sizeof(client_ip),
+			    NULL, 0, NI_NAMEREQD);
+		printf("Datagram received from %s\n", client_ip);
 		sendto(socket_fd, &recv_data, 1024, 0,
 		      (struct sockaddr *) &client_addr, addrlen);
-		printf("Answering datagram sent\n");
+		printf("Answering datagram sent to %s\n", client_ip);
 	}
 	close(socket_fd);
 	return 0;
