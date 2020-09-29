@@ -5,5 +5,5 @@ first start the server:
 ```
 then connect to it with `netcat`:
 ```
-nc -u 127.0.0.1 8888
+nc -u localhost 8888
 ````
