@@ -42,6 +42,8 @@ int main(void)
 		return 1;
 	}
 
+	freeaddrinfo(results);
+
 	printf("Listening\n");
 
 	while (1) {
