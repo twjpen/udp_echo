@@ -44,7 +44,7 @@ int main(void)
 
 	freeaddrinfo(results);
 
-	printf("Listening\n");
+	printf("Listening on port  %s\n", PORT);
 
 	while (1) {
 		memset(&recv_data, 0, sizeof(recv_data));
