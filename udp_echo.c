@@ -18,7 +18,7 @@ int main(void)
 {
 	int socket_fd;
 	struct addrinfo hints;
-	struct addrinfo *results;
+	struct addrinfo *res;
 	struct sockaddr_storage client_addr;
 	char recv_data[1024];
 	socklen_t addrlen = sizeof(client_addr);
@@ -28,21 +28,21 @@ int main(void)
 	hints.ai_socktype = SOCK_DGRAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(NULL, PORT, &hints, &results);
+	getaddrinfo(NULL, PORT, &hints, &res);
 
-	if ((socket_fd = socket(results->ai_family,
-				results->ai_socktype,
-				results->ai_protocol)) < 0) {
+	if ((socket_fd = socket(res->ai_family,
+				res->ai_socktype,
+				res->ai_protocol)) < 0) {
 		printf("Error: could not create socket\n");
 		return 1;
 	}
 
-	if (bind(socket_fd, results->ai_addr, results->ai_addrlen) != 0) {
+	if (bind(socket_fd, res->ai_addr, res->ai_addrlen) != 0) {
 		printf("Error: could not bind port to address\n");
 		return 1;
 	}
 
-	freeaddrinfo(results);
+	freeaddrinfo(res);
 
 	printf("Listening on port %s\n", PORT);
 
@@ -54,7 +54,7 @@ int main(void)
 					 (struct sockaddr *) &client_addr, &addrlen);
 		recv_data[bytes_read] = '\0';
 		getnameinfo((struct sockaddr *)&client_addr, addrlen,
-			     client_ip, sizeof(client_ip),
+			    client_ip, sizeof(client_ip),
 			    NULL, 0, NI_NAMEREQD);
 		printf("Datagram received from %s\n", client_ip);
 		sendto(socket_fd, &recv_data, 1024, 0,
